@@ -21,6 +21,23 @@ class BugList {
     }
     addBug(bugText) {
         let bug = new BugReport(bugText);
+        if(this.bugs.length === 0) {
+            this.bugs.unshift(bug);
+        } else {
+            let lastIndexAtSameOrHigherPriority = null;
+            for(let i = 0; i < this.bugs.length; i++) {
+                if (this.bugs.priority >= bug.priority) {
+                    lastIndexAtSameOrHigherPriority = i;
+                }
+                // Ok, if last Index is null, then there are no bugs at the same
+                // or higher priority, so insert to the head of the queue
+                if (!lastIndexAtSameOrHigherPriority) {
+                    this.bugs.push(bug);
+                } else {
+                    this.bugs.splice(i, 0, bug);
+                }
+            }
+        }
         this.bugs.unshift(bug);
     }
 }
