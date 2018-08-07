@@ -1,8 +1,8 @@
 class BugReport {
-    constructor(bug, priority) {
+    constructor(bug) {
         this.bug = bug;
         this.time = new Date();
-        this.priority = priority;
+        // this.priority = priority;
     }
     getTimeStamp() {
         return this.time.toString();
@@ -46,10 +46,10 @@ $(document).ready( () => {
     let bugList = new BugList();
     let hasBugReport = false;
 
-    bugList.addBug('Invisible bears haunt software', 1);
-    bugList.addBug('Developers who fail to pass on this bug to three other developers are killed by some sort of ring ghost after a week.', 3);
-    bugList.addBug('addBug function inexplicably reformats hard drive with the lyrics to "Shake It Off" by Taylor Swift.', 2);
-    bugList.addBug('Software literally filled room with bugs.', 1);
+    bugList.addBug('Invisible bears haunt software');
+    bugList.addBug('Developers who fail to pass on this bug to three other developers are killed by some sort of ring ghost after a week.');
+    bugList.addBug('addBug function inexplicably reformats hard drive with the lyrics to "Shake It Off" by Taylor Swift.');
+    bugList.addBug('Software literally filled room with bugs.');
 
 
     $('body').on('click', '.left button', () => {
