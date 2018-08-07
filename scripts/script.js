@@ -1,8 +1,8 @@
 class BugReport {
-    constructor(bug) {
+    constructor(bug, priority) {
         this.bug = bug;
         this.time = new Date();
-        // this.priority = priority;
+        this.priority = priority;
     }
     getTimeStamp() {
         return this.time.toString();
@@ -15,29 +15,32 @@ class BugList {
     }
     getBug() {
         if(this.bugs.length > 0) {
-            return this.bugs.pop();
+            return this.bugs.shift();
         }
         return null;
     }
-    addBug(bugText) {
-        let bug = new BugReport(bugText);
-        if(this.bugs.length === 0) {
+    addBug(bugText, priority) {
+        let bug = new BugReport(bugText, priority);
+        let currentBugsLength = this.bugs.length;
+        if(currentBugsLength === 0) {
             this.bugs.unshift(bug);
         } else {
-            // let lastIndexAtSameOrHigherPriority = null;
-            // for(let i = 0; i < this.bugs.length; i++) {
-            //     if (this.bugs.priority >= bug.priority) {
-            //         lastIndexAtSameOrHigherPriority = i;
-            //     }
-            //     // Ok, if last Index is null, then there are no bugs at the same
-            //     // or higher priority, so insert to the head of the queue
-            //     if (!lastIndexAtSameOrHigherPriority) {
-            //         this.bugs.push(bug);
-            //     } else {
-            //         this.bugs.splice(i, 0, bug);
-            //     }
-            // }
-            this.bugs.unshift(bug);
+            let lastIndexAtSameOrHigherPriority = null;
+            for(let i = 0; i < currentBugsLength; i++) {
+                if(bug.priority >= this.bugs[i].priority) {
+                    lastIndexAtSameOrHigherPriority = i;
+                }
+                // if (this.bugs[i].priority >= bug.priority) {
+                //     lastIndexAtSameOrHigherPriority = i;
+                // }
+
+            }
+            // if lastIndex is null, then this has the lowest priority
+            if (lastIndexAtSameOrHigherPriority !== 0 && !lastIndexAtSameOrHigherPriority) {
+                this.bugs.push(bug);
+            } else {
+                this.bugs.splice(lastIndexAtSameOrHigherPriority + 1, 0, bug);
+            }
         }
     }
 }
@@ -46,10 +49,10 @@ $(document).ready( () => {
     let bugList = new BugList();
     let hasBugReport = false;
 
-    bugList.addBug('Invisible bears haunt software');
-    bugList.addBug('Developers who fail to pass on this bug to three other developers are killed by some sort of ring ghost after a week.');
-    bugList.addBug('addBug function inexplicably reformats hard drive with the lyrics to "Shake It Off" by Taylor Swift.');
-    bugList.addBug('Software literally filled room with bugs.');
+    bugList.addBug('Invisible bears haunt software', 1);
+    bugList.addBug('addBug function inexplicably reformats hard drive with the lyrics to "Shake It Off" by Taylor Swift.', 2);
+    bugList.addBug('Developers who fail to pass on this bug to three other developers are killed by some sort of ring ghost after a week.', 3);
+    bugList.addBug('Software literally filled room with bugs.', 1);
 
 
     $('body').on('click', '.left button', () => {
@@ -57,7 +60,7 @@ $(document).ready( () => {
             let bug = bugList.getBug();
             $('#bugTime').text(`Most Recent Reported Date: ${bug.getTimeStamp()}`);
             $('#bugReport').text(`${bug.bug}`);
-            // $('#bugPriority').text(`${bug.priority}`)
+            $('#bugPriority').text(`${bug.priority}`)
             hasBugReport = true;
         }
     });
@@ -65,22 +68,23 @@ $(document).ready( () => {
     $('body').on('click', '#bugFixed', () => {
         $('#bugTime').text(``);
         $('#bugReport').text(``);
-        // $('#bugPriority').text(``);
+        $('#bugPriority').text(``);
         hasBugReport = false;
     });
 
     $('body').on('click', '#bugReturned', () => {
         if(hasBugReport) {
-            bugList.addBug($('#bugReport').text());
+            bugList.addBug($('#bugReport').text(), parseInt($('#bugPriority').text()));
             $('#bugTime').text(``);
             $('#bugReport').text(``);
-            // $('#bugPriority').text(``);
+            $('#bugPriority').text(``);
             hasBugReport = false;
+            console.log(bugList.bugs);
         }
     });
 
     $('body').on('click', '#bugSubmit', () => {
-        bugList.addBug($('.moreLeft textarea').val(), $('.moreLeft select').val());
+        bugList.addBug($('.moreLeft textarea').val(), parseInt($('.moreLeft option:selected').text()));
         $('.moreLeft textarea').val('');
-    })
+    });
 });
