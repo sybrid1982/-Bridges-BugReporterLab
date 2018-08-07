@@ -24,21 +24,21 @@ class BugList {
         if(this.bugs.length === 0) {
             this.bugs.unshift(bug);
         } else {
-            let lastIndexAtSameOrHigherPriority = null;
-            for(let i = 0; i < this.bugs.length; i++) {
-                if (this.bugs.priority >= bug.priority) {
-                    lastIndexAtSameOrHigherPriority = i;
-                }
-                // Ok, if last Index is null, then there are no bugs at the same
-                // or higher priority, so insert to the head of the queue
-                if (!lastIndexAtSameOrHigherPriority) {
-                    this.bugs.push(bug);
-                } else {
-                    this.bugs.splice(i, 0, bug);
-                }
-            }
+            // let lastIndexAtSameOrHigherPriority = null;
+            // for(let i = 0; i < this.bugs.length; i++) {
+            //     if (this.bugs.priority >= bug.priority) {
+            //         lastIndexAtSameOrHigherPriority = i;
+            //     }
+            //     // Ok, if last Index is null, then there are no bugs at the same
+            //     // or higher priority, so insert to the head of the queue
+            //     if (!lastIndexAtSameOrHigherPriority) {
+            //         this.bugs.push(bug);
+            //     } else {
+            //         this.bugs.splice(i, 0, bug);
+            //     }
+            // }
+            this.bugs.unshift(bug);
         }
-        this.bugs.unshift(bug);
     }
 }
 
@@ -57,7 +57,7 @@ $(document).ready( () => {
             let bug = bugList.getBug();
             $('#bugTime').text(`Most Recent Reported Date: ${bug.getTimeStamp()}`);
             $('#bugReport').text(`${bug.bug}`);
-            $('#bugPriority').text(`${bug.priority}`)
+            // $('#bugPriority').text(`${bug.priority}`)
             hasBugReport = true;
         }
     });
@@ -65,7 +65,7 @@ $(document).ready( () => {
     $('body').on('click', '#bugFixed', () => {
         $('#bugTime').text(``);
         $('#bugReport').text(``);
-        $('#bugPriority').text(``);
+        // $('#bugPriority').text(``);
         hasBugReport = false;
     });
 
@@ -74,7 +74,7 @@ $(document).ready( () => {
             bugList.addBug($('#bugReport').text());
             $('#bugTime').text(``);
             $('#bugReport').text(``);
-            $('#bugPriority').text(``);
+            // $('#bugPriority').text(``);
             hasBugReport = false;
         }
     });
