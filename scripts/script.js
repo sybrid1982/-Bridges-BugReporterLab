@@ -1,7 +1,8 @@
 class BugReport {
-    constructor(bug) {
+    constructor(bug, priority) {
         this.bug = bug;
         this.time = new Date();
+        this.priority = priority;
     }
     getTimeStamp() {
         return this.time.toString();
@@ -55,4 +56,9 @@ $(document).ready( () => {
             hasBugReport = false;
         }
     });
+
+    $('body').on('click', '#bugSubmit', () => {
+        bugList.addBug($('.moreLeft textarea').val());
+        $('.moreLeft textarea').val('');
+    })
 });
