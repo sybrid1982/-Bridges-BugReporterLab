@@ -46,15 +46,18 @@ $(document).ready( () => {
     let bugList = new BugList();
     let hasBugReport = false;
 
-    bugList.addBug('Invisible bears haunt software');
-    bugList.addBug('Developers who fail to pass on this bug to three other developers are killed by some sort of ring ghost after a week.');
-    bugList.addBug('addBug function inexplicably reformats hard drive with the lyrics to "Shake It Off" by Taylor Swift.');
+    bugList.addBug('Invisible bears haunt software', 1);
+    bugList.addBug('Developers who fail to pass on this bug to three other developers are killed by some sort of ring ghost after a week.', 3);
+    bugList.addBug('addBug function inexplicably reformats hard drive with the lyrics to "Shake It Off" by Taylor Swift.', 2);
+    bugList.addBug('Software literally filled room with bugs.', 1);
+
 
     $('body').on('click', '.left button', () => {
         if(!hasBugReport){
             let bug = bugList.getBug();
             $('#bugTime').text(`Most Recent Reported Date: ${bug.getTimeStamp()}`);
             $('#bugReport').text(`${bug.bug}`);
+            $('#bugPriority').text(`${bug.priority}`)
             hasBugReport = true;
         }
     });
@@ -62,6 +65,7 @@ $(document).ready( () => {
     $('body').on('click', '#bugFixed', () => {
         $('#bugTime').text(``);
         $('#bugReport').text(``);
+        $('#bugPriority').text(``);
         hasBugReport = false;
     });
 
@@ -70,12 +74,13 @@ $(document).ready( () => {
             bugList.addBug($('#bugReport').text());
             $('#bugTime').text(``);
             $('#bugReport').text(``);
+            $('#bugPriority').text(``);
             hasBugReport = false;
         }
     });
 
     $('body').on('click', '#bugSubmit', () => {
-        bugList.addBug($('.moreLeft textarea').val());
+        bugList.addBug($('.moreLeft textarea').val(), $('.moreLeft select').val());
         $('.moreLeft textarea').val('');
     })
 });
